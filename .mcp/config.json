@@ -6,6 +6,12 @@
                 ".mcp/servers/framework-server.ts"
             ]
         },
+        "coordination": {
+            "command": "bun",
+            "args": [
+                ".mcp/servers/coordination-server.ts"
+            ]
+        },
         "github": {
             "command": "npx",
             "args": [

@@ -1,0 +1,9 @@
+default_branch: main
+develop_branch: develop
+
+workflow:
+  feature_branches: "agent/feature/*"
+  fix_branches: "agent/fix/*"
+  
+commit_style: conventional
+# Types: feat, fix, docs, style, refactor, test, chore

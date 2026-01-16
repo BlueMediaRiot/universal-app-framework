@@ -1,0 +1,39 @@
+name: Intelligence Analysis
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+      
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Run intelligence analysis
+        run: pnpm run intelligence:all
+      
+      - name: Commit analysis results
+        run: |
+          git config user.name "Intelligence Bot"
+          git config user.email "bot@framework.dev"
+          git add .dashboard/
+          git commit -m "[intelligence] Daily analysis results" || true
+          git push || true

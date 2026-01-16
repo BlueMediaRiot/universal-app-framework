@@ -1,0 +1,6 @@
+[submodule "swarm-tools"]
+	path = swarm-tools
+	url = https://github.com/joelhooks/swarm-tools
+[submodule "opencode-config"]
+	path = opencode-config
+	url = https://github.com/joelhooks/opencode-config

@@ -1,0 +1,50 @@
+{
+  "name": "universal-app-framework",
+  "version": "2.0.0",
+  "description": "Intelligent agent-driven application framework with autonomous learning and decision-making",
+  "type": "module",
+  "scripts": {
+    "setup": "pnpm install && pnpm run intelligence:setup",
+    "intelligence:setup": "tsx execution/setup-intelligence.ts",
+    "intelligence:heal": "tsx execution/intelligence/self-healing.ts",
+    "intelligence:patterns": "tsx execution/intelligence/analyze-patterns.ts",
+    "intelligence:decisions": "tsx execution/intelligence/decision-engine.ts",
+    "intelligence:risks": "tsx execution/intelligence/risk-assessment.ts",
+    "intelligence:errors": "tsx execution/intelligence/error-mining.ts",
+    "intelligence:predict": "tsx execution/intelligence/predictive-cores.ts",
+    "intelligence:meta": "tsx execution/intelligence/meta-learner.ts",
+    "intelligence:report": "tsx execution/intelligence/generate-report.ts",
+    "intelligence:all": "pnpm run intelligence:patterns && pnpm run intelligence:errors && pnpm run intelligence:predict && pnpm run intelligence:meta && pnpm run intelligence:report",
+    "monitor": "pnpm run intelligence:heal",
+    "analyze": "pnpm run intelligence:all",
+    "test": "echo 'Tests will run here'",
+    "dev": "echo 'Development server would start here'",
+    "build": "echo 'Build process would run here'"
+  },
+  "keywords": [
+    "framework",
+    "agent-driven",
+    "autonomous",
+    "ai",
+    "learning",
+    "decision-making"
+  ],
+  "author": "Blue",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "better-sqlite3": "^9.2.2",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.8",
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

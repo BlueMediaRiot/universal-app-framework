@@ -1,0 +1,32 @@
+version: 1.0.0
+defaultLevel: aggressive
+
+levels:
+  aggressive:
+    description: "Maximum speed. Agents self-approve most actions."
+    permissions:
+      file_creation: auto
+      file_editing: auto
+      file_deletion: auto
+      terminal_execution: auto
+      git_commits: auto
+    notifications:
+      on_failure: true
+      on_major_change: true
+      on_success: false
+      
+  moderate:
+    description: "Balanced approach. Safe actions defined."
+    permissions:
+      file_creation: auto
+      file_editing: auto (ask for deletion)
+      terminal_execution: safe_only
+      git_commits: review
+      
+  conservative:
+    description: "Maximum safety. Humans approve everything."
+    permissions:
+      file_creation: review
+      file_editing: review
+      terminal_execution: review
+      git_commits: review

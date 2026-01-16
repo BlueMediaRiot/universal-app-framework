@@ -1,0 +1,19 @@
+{
+    "name": "@universal/core-logger",
+    "version": "0.1.0",
+    "private": true,
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "tsc",
+        "dev": "tsc -w",
+        "clean": "rimraf dist"
+    },
+    "dependencies": {
+        "@universal/core-system": "workspace:*"
+    },
+    "devDependencies": {
+        "typescript": "^5.3.0",
+        "rimraf": "^5.0.0"
+    }
+}

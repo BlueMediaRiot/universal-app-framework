@@ -1,8 +1,8 @@
 import { describe, it } from 'node:test';
 import * as assert from 'node:assert';
 import { CoreLoader, cleanupCores } from '../packages/core-system/src/core-loader';
-import { LoggerCore } from '../packages/core-logger/src/index';
-import { MathCore } from '../packages/core-math/src/index';
+import { LoggerCore } from '../packages/cores/core-logger/src/index';
+import { MathCore } from '../packages/cores/core-math/src/index';
 
 describe('End-to-End Tests', () => {
     describe('Complete application flow', async () => {

@@ -17,14 +17,15 @@ export interface CoreLoadResult {
 export class CoreLoader {
     async loadCores(
         coresToLoad: Record<string, CoreDefinition>,
-        appConfig: Record<string, any> = {}
+        appConfig: Record<string, any> = {},
+        environment?: string
     ): Promise<CoreLoadResult> {
         const errors: Array<{ core: string; error: Error }> = [];
         const loadedCores: Record<string, any> = {};
 
         // Initialize infrastructure
         const eventBus = new RxEventBus();
-        const configStore = new ConfigStore(appConfig);
+        const configStore = new ConfigStore(appConfig, environment);
         const secretStore = new SecretStore();
         const serviceRegistry = new ServiceRegistry();
         const pluginRegistry = new PluginRegistry();

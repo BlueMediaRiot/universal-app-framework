@@ -1,0 +1,8 @@
+{
+  "id": "bug-1768558696718",
+  "timestamp": "2026-01-16T10:18:16.718Z",
+  "description": "Test bug",
+  "context": {
+    "file": "test.ts"
+  }
+}

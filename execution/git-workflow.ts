@@ -122,7 +122,7 @@ export class GitWorkflow {
      * Get commit history
      */
     getHistory(limit: number = 10): Array<{ hash: string; message: string; date: string }> {
-        const output = execSync(`git log -${limit} --format=%H|%s|%ai`, {
+        const output = execSync(`git log -${limit} --format="%H|%s|%ai"`, {
             cwd: this.cwd,
             encoding: 'utf-8'
         });

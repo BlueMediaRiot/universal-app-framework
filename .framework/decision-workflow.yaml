@@ -1,0 +1,28 @@
+decision_workflow:
+  default_sla_hours: 24
+  
+  urgency_levels:
+    urgent:
+      sla_hours: 4
+      escalation: [email, slack]
+      timeout_action: use_safe_default
+    high:
+      sla_hours: 24
+      escalation: [email]
+      timeout_action: defer
+    normal:
+      sla_hours: 72
+      escalation: []
+      timeout_action: use_learned_pattern
+    low:
+      sla_hours: 168
+      escalation: []
+      timeout_action: defer
+  
+  vacation_mode:
+    enabled: false
+    delegate_to: null
+  
+  decision_expiry:
+    enabled: true
+    expire_after_days: 30

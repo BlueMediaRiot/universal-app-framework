@@ -1,8 +1,8 @@
 import { describe, it } from 'node:test';
 import * as assert from 'node:assert';
 import { CoreLoader } from '../packages/core-system/src/core-loader';
-import { LoggerCore } from '../packages/core-logger/src/index';
-import { MathCore } from '../packages/core-math/src/index';
+import { LoggerCore } from '../packages/cores/core-logger/src/index';
+import { MathCore } from '../packages/cores/core-math/src/index';
 import CoreAiApi, { prompt, complete } from '../packages/cores/core-ai-api/src/index';
 
 describe('Core Integration Tests', () => {
