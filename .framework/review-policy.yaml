@@ -1,0 +1,200 @@
+# .framework/review-policy.yaml
+
+# Global settings
+enabled: true
+default_timeout_minutes: 30
+async_reviews: true                      # Reviewer works async, creator continues
+
+# What requires review
+review_required:
+  actions:
+    - create_core
+    - create_app
+    - architecture_decision
+    - major_refactor
+    - breaking_change
+    - security_change
+    - database_migration
+    - api_endpoint_change
+  
+  # Exceptions - skip review even if in actions list
+  skip_if:
+    # Autonomy-based
+    - autonomy_level: aggressive
+      except_for: [security_change, breaking_change]
+    
+    # Action-based
+    - action_type: fix_typo
+    - action_type: update_formatting
+    - action_type: add_comment
+    - action_type: update_readme
+    
+    # Pattern-based (learned)
+    - has_auto_skip_pattern: true
+      min_confidence: 0.9
+      min_successes: 10
+
+# Reviewer assignments
+reviewer_matrix:
+  # Format: creator → [primary_reviewer, backup_reviewer, escalation_reviewer]
+  
+  architect:
+    primary: optimizer                   # Check for over-engineering
+    backup: auditor
+    escalate: human
+    reasons:
+      - "Optimizer ensures practical solutions"
+      - "Auditor checks quality standards"
+  
+  core_developer:
+    primary: auditor                     # Code quality expert
+    backup: tester                       # Testability perspective
+    escalate: architect                  # Design questions
+    reasons:
+      - "Auditor reviews code quality and conventions"
+      - "Tester ensures it's testable"
+  
+  app_developer:
+    primary: architect                   # Design coherence
+    backup: core_developer               # Implementation feasibility
+    escalate: human
+    reasons:
+      - "Architect ensures app design makes sense"
+      - "Core developer checks for proper core usage"
+  
+  optimizer:
+    primary: architect                   # Prevent over-optimization
+    backup: auditor
+    escalate: human
+    reasons:
+      - "Architect checks if optimization is worth complexity"
+      - "Auditor ensures code remains readable"
+  
+  tester:
+    primary: core_developer              # Test quality
+    backup: auditor
+    escalate: architect
+    reasons:
+      - "Core developer ensures tests actually test the right thing"
+      - "Auditor checks test coverage"
+
+# Review criteria by type
+criteria:
+  create_core:
+    required:
+      - correct_interface_design: "Interface is intuitive and follows conventions"
+      - proper_error_handling: "Errors are caught and handled appropriately"
+      - has_comprehensive_tests: "Tests cover happy path and edge cases"
+      - follows_naming_conventions: "Names match core-xxx pattern and are descriptive"
+      - no_breaking_changes: "Doesn't break existing cores or apps"
+      - documentation_complete: "JSDoc comments and metadata are present"
+      - single_responsibility: "Core does one thing well"
+      - size_appropriate: "Under 300 lines or properly split"
+    
+    optional:
+      - performance_acceptable: "No obvious performance issues"
+      - dependencies_justified: "Dependencies are necessary and reasonable"
+      - config_schema_clear: "Configuration options are well-documented"
+  
+  create_app:
+    required:
+      - uses_right_cores: "Core selection makes sense for requirements"
+      - proper_configuration: "App config is complete and valid"
+      - has_integration_tests: "Tests verify cores work together"
+      - no_duplicate_logic: "Doesn't re-implement existing core functionality"
+      - proper_lifecycle: "init/cleanup handled correctly"
+    
+    optional:
+      - ui_quality: "If hasUI, interface is usable (browser tests pass)"
+      - error_recovery: "App handles core failures gracefully"
+  
+  architecture_decision:
+    required:
+      - problem_clearly_stated: "Problem is well-defined"
+      - options_evaluated: "Multiple approaches considered"
+      - tradeoffs_documented: "Pros/cons for each option"
+      - recommendation_justified: "Chosen approach is well-reasoned"
+      - impacts_identified: "Effects on existing system are understood"
+    
+    optional:
+      - alternatives_considered: "Alternative approaches documented"
+      - reversibility_noted: "How to undo this decision if needed"
+  
+  major_refactor:
+    required:
+      - backwards_compatible: "Existing code still works OR migration path provided"
+      - tests_still_pass: "All existing tests pass after refactor"
+      - improvement_measurable: "Concrete benefit (performance, clarity, etc.)"
+      - no_scope_creep: "Doesn't add features, just improves structure"
+    
+    optional:
+      - rollback_plan: "Clear rollback strategy if issues arise"
+
+# Review standards
+standards:
+  approve:
+    min_checklist_pass_rate: 1.0         # All required criteria must pass
+    min_confidence: 80                   # Reviewer confidence >= 80%
+    max_critical_concerns: 0             # No critical issues
+  
+  request_changes:
+    conditions:
+      - critical_concerns: ">0"          # Any critical issue
+      - checklist_pass_rate: "<1.0"      # Required criteria failed
+      - confidence: "<60"                # Low confidence it will work
+  
+  reject:
+    conditions:
+      - fundamental_flaw: true           # Wrong approach entirely
+      - would_break_system: true         # Would cause major issues
+      - security_risk: "critical"        # Security vulnerability
+      - better_to_start_over: true       # Revision would take longer than restart
+
+# Escalation rules
+escalation:
+  auto_escalate_to_human:
+    - reviewer_status: "REJECT"
+      and_creator_disagrees: true
+    
+    - review_cycles: ">3"                # Back-and-forth >3 times
+    
+    - time_exceeded: ">2 hours"          # Review taking too long
+    
+    - confidence_gap: ">40"              # Creator 90% confident, reviewer 50%
+  
+  human_timeout: 48                      # Hours before auto-approve if human doesn't respond
+
+# Performance targets
+performance:
+  target_review_time_minutes: 15
+  max_review_time_minutes: 30
+  parallel_reviews_max: 3                # Reviewer can handle 3 simultaneous reviews
+  review_queue_max: 5                    # If >5 pending, pause new reviews
+
+# Learning settings
+learning:
+  auto_skip_eligibility:
+    min_successful_reviews: 10
+    min_confidence_avg: 0.9
+    lookback_period_days: 30
+  
+  pattern_confidence_increase_per_success: 0.05
+  pattern_confidence_decrease_per_failure: 0.15
+  
+  suggest_skip_after_eligible_days: 7    # Wait 1 week before suggesting
+
+# Notification settings
+notifications:
+  notify_creator_on:
+    - review_approved
+    - review_changes_requested
+    - review_rejected
+  
+  notify_reviewer_on:
+    - review_requested
+    - creator_revised
+  
+  notify_human_on:
+    - review_escalated
+    - review_timeout
+    - pattern_eligible_for_skip

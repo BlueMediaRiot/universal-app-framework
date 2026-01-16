@@ -179,6 +179,54 @@ export class GitWorkflow {
         const cmd = staged ? 'git diff --cached' : 'git diff';
         return execSync(cmd, { cwd: this.cwd, encoding: 'utf-8' });
     }
+
+    /**
+     * Check if there are pending reviews that block merge
+     * This is a Phase 2 review gate integration
+     */
+    async hasPendingReviews(): Promise<{ blocked: boolean; pendingReviews: string[] }> {
+        // Check dashboard for pending reviews related to current branch
+        const pendingDir = path.join(this.cwd, '.dashboard/reviews/pending');
+        const branch = this.getStatus().branch;
+
+        if (!fs.existsSync(pendingDir)) {
+            return { blocked: false, pendingReviews: [] };
+        }
+
+        const pendingFiles = fs.readdirSync(pendingDir).filter(f => f.endsWith('.md'));
+
+        // In a full implementation, we'd check if reviews are for this branch
+        // For now, any pending review blocks merge to develop
+        if (pendingFiles.length > 0 && branch === 'develop') {
+            return {
+                blocked: true,
+                pendingReviews: pendingFiles.map(f => f.replace('.md', ''))
+            };
+        }
+
+        return { blocked: false, pendingReviews: [] };
+    }
+
+    /**
+     * Merge with review gate check
+     */
+    async safeMerge(targetBranch: string): Promise<{ success: boolean; message: string }> {
+        const reviewCheck = await this.hasPendingReviews();
+
+        if (reviewCheck.blocked) {
+            return {
+                success: false,
+                message: `⚠️ Merge blocked! ${reviewCheck.pendingReviews.length} pending reviews: ${reviewCheck.pendingReviews.join(', ')}`
+            };
+        }
+
+        try {
+            execSync(`git merge ${targetBranch}`, { cwd: this.cwd });
+            return { success: true, message: `✅ Merged ${targetBranch} successfully` };
+        } catch (error) {
+            return { success: false, message: `❌ Merge failed: ${error}` };
+        }
+    }
 }
 
 // CLI

@@ -1,0 +1,52 @@
+# .framework/self-healing-config.yaml
+
+enabled: true
+
+monitors:
+  - name: test_failures
+    check_interval_seconds: 300  # 5 minutes
+    enabled: true
+    
+  - name: performance_regression
+    check_interval_seconds: 600  # 10 minutes
+    enabled: true
+    
+  - name: error_rate_spike
+    check_interval_seconds: 180  # 3 minutes
+    enabled: true
+
+auto_recovery_actions:
+  test_failure:
+    - action: rollback_last_commit
+      condition: "tests_failing > 3"
+      max_attempts: 1
+      
+    - action: run_git_bisect
+      condition: "rollback_didnt_help"
+      
+    - action: notify_human
+      condition: "after_2_failed_attempts"
+      priority: high
+      
+  performance_regression:
+    - action: capture_performance_profile
+      condition: "response_time > baseline * 2"
+      
+    - action: analyze_slowdown
+      
+    - action: suggest_optimization
+      confidence_required: 0.8
+      
+    - action: auto_apply_fix
+      condition: "confidence > 0.9 AND impact < 10_lines"
+      
+  error_rate_spike:
+    - action: capture_error_samples
+      sample_size: 100
+      
+    - action: analyze_error_pattern
+      
+    - action: check_recent_changes
+      
+    - action: rollback_if_obvious
+      condition: "single_commit_caused_it AND confidence > 0.95"

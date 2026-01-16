@@ -1,0 +1,47 @@
+# .framework/intelligence.yaml
+
+version: "1.0.0"
+enabled: true
+
+features:
+  predictive_core_creation: true
+  dependency_intelligence: true
+  self_healing: true
+  auto_testing: true
+  decision_analysis: true
+  risk_assessment: true
+  production_telemetry: true
+  error_mining: true
+  performance_learning: true
+  user_behavior_learning: true
+  temporal_patterns: true
+  meta_learning: true
+
+# Intelligence levels (will upgrade these gradually)
+intelligence_level: "basic"  # basic -> intermediate -> advanced -> expert
+
+# Learning settings
+learning:
+  pattern_detection_threshold: 3  # patterns after N occurrences
+  confidence_threshold: 0.85      # 85% confidence to auto-approve
+  experiment_duration_days: 7
+  data_retention_days: 90
+  
+# Auto-healing settings
+self_healing:
+  enabled: true
+  max_auto_fix_attempts: 3
+  rollback_on_failure: true
+  notify_human_after_attempts: 2
+  
+# Risk thresholds
+risk_assessment:
+  critical_threshold: 0.8  # 80%+ = critical risk
+  high_threshold: 0.6      # 60%+ = high risk
+  medium_threshold: 0.4    # 40%+ = medium risk
+  
+# Performance baselines
+performance:
+  establish_baseline_after_days: 7
+  regression_alert_threshold: 0.1  # 10% slower
+  auto_revert_threshold: 0.5       # 50% slower
