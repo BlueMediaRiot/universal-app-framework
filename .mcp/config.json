@@ -1,0 +1,25 @@
+{
+    "mcpServers": {
+        "framework": {
+            "command": "tsx",
+            "args": [
+                ".mcp/servers/framework-server.ts"
+            ]
+        },
+        "github": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-github"
+            ]
+        },
+        "filesystem": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "@modelcontextprotocol/server-filesystem",
+                "."
+            ]
+        }
+    }
+}

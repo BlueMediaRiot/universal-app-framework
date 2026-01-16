@@ -1,0 +1,5 @@
+patterns:
+  # Agents will write learned preferences here
+  # Example:
+  # - context: "UI Design"
+  #   preference: "Use glassmorphism with dark mode by default"
