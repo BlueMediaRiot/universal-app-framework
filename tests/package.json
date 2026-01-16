@@ -1,0 +1,11 @@
+{
+    "scripts": {
+        "test": "node --test tests/**/*.test.ts",
+        "test:core-system": "node --test tests/core-system.test.ts",
+        "test:cores": "node --test tests/cores.test.ts",
+        "test:automation": "node --test tests/automation.test.ts",
+        "test:e2e": "node --test tests/e2e.test.ts",
+        "test:watch": "node --test --watch tests/**/*.test.ts",
+        "test:coverage": "node --test --experimental-test-coverage tests/**/*.test.ts"
+    }
+}

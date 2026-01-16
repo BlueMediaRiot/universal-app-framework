@@ -2,3 +2,8 @@ export * from './types';
 export * from './runtime';
 export * from './event-bus';
 export * from './config';
+export * from './config-store';
+export * from './secret-store';
+export * from './service-registry';
+export * from './plugin-registry';
+export * from './core-loader';
