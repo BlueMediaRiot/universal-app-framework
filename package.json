@@ -1,0 +1,21 @@
+{
+    "name": "universal-app-framework",
+    "private": true,
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev",
+        "lint": "turbo run lint",
+        "test": "turbo run test",
+        "clean": "turbo run clean",
+        "check-env": "tsx execution/check-environment.ts",
+        "sync-rules": "tsx execution/sync-antigravity-rules.ts",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    },
+    "devDependencies": {
+        "turbo": "^1.10.0",
+        "prettier": "^3.0.0",
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.0",
+        "@types/node": "^20.11.0"
+    }
+}
